@@ -1,0 +1,138 @@
+3-1 使用React编写TOdolist功能
+    JSX语法要求所有的元素都被包含在一个大的元素之中
+    Fragment 可以解决上诉问题
+
+3-2 React中的响应式设计思想和事件绑定
+      强调不操作DOM 而是对数据的操作
+      最先执行的函数
+          constructor (props) {
+            super(props);
+            this.state = {   //组件的状态
+                inputValue: '',
+                list: []
+            }
+          }
+          input框中的value={this.state.inputValue}
+          响应式的页面
+          react数据绑定
+          onChange={this.handleInputChange}
+          handleInputChange这个方法是在render下面进行书写
+          handleInputChange (e) {
+            //console.log(e)
+            console.log(e.target.value)
+          }
+
+
+         学习了这一章即了解vue和react绑定数据的不同
+         vue直接在input框中通过：进行数据绑定
+         react是使用
+         constructor （props） {
+            super(props);
+            this.state = {
+                inputValue: "",
+                list: []
+            }
+         }
+         input框子中
+         value={this.state.inputValue}
+         onChange={this.handleInputChange.bind(this)}  onChange  C必须大写
+         this必须进行数据的绑定
+
+          handleChange (e) {
+                this.setState ({
+                    inputValue: e.target.value
+                })
+             }
+
+
+
+3-3 实现TodoList新增删除功能
+      按钮绑定事件 React绑定事件名称一定要大写onClick 并且要对this进行绑定
+      不然this指向会有问题的
+
+       li的循环
+       <ul>
+        {
+            this.state.list.map((item, index) => {
+                return <li>{item}</li>
+            })
+        }
+       </ul>
+
+       es6数组 ...数组展开运算符
+
+       将input框绑定的inputValue的值放到list
+       handleClick () {
+        this.setState ({
+           this.state.list: [...this.state.list, this.state.inputValue]
+        })
+       }
+
+
+    实现数据的删除
+    绑定删除函数
+    onClick={this.delClick.bind(this, index)}
+    第一种方法
+    delClick (index) {
+        vue实现数据的修改 需要使用this.setState ({})
+        const list = [...this.state.list]
+        list.splice(index, 1)
+        this.setState ({
+            list: list
+        })
+    }
+
+    第二种方法 确实可以实现 但是这种方法是错误的
+    this.state.list.splice(index, 1)
+    this.setState ({
+        list: this.state.list
+
+    })
+    为什么说这种方法是错误的呢
+    React中有immutable的要求 state不允许我们做任何的改变
+    而是拷贝一个list对list进行变更 这样对后面的性能优化存在一定的问题
+
+
+3-4  JSX语法细节补充
+    如何在JSX语法中进行注释
+    Fragment大写 一般是组件 小写是html代码
+    所以说Fragment是一个组件
+    注释的写法
+    第一种
+        {/*下面是一个input*/}
+    第二种
+        {
+            //下面是一个input框
+        }
+    {}是js的语法
+
+    css的编写
+    使用class对类名使用的class可能会产生混淆
+    className=""
+    当我们在input框中输入
+    <h1>hello</h1>
+    直接输出原样式
+    对h1不进行转义
+    在li标签中
+    JSX语法
+    dangerouslySetInnerHTML={{__html: item}}
+    使用上诉方式即可解决原样式输出的问题
+    <label>输入内容</label>
+    在HTML中label的作用是
+    点击label中的文字，光标会到input框之中
+    input框中
+    id="inserAlert"
+    label框中
+    for="inserAlert"
+    这样在页面展示的时候是没有任何问题的
+    但是会在console中报错误，因为for在React中会认为是循环，即会报错
+    解决方法
+    将for="inserAlert" 修改为 htmlFor="inserAlert"
+
+
+3-5 拆分组价与组件之间的传值
+
+
+
+
+

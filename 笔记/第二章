@@ -1,0 +1,35 @@
+2-3 工程目录文件简介
+    yarn.lock
+    README 项目的说明 通过markdown的语法
+        例： ##React 教学Demo
+    package.json 脚手架工具的node包文件 脚手架自动生成的文件
+    .gittigonore 不想上传到git上的文件
+
+    index.js  整个程序运行的起始文件
+
+    PWA progressive web application
+    https协议的服务器
+     而我们只是使用简单的todolist的功能 为了使页面更加简洁
+     可以将import * as serviceWorker from './serviceWorker';
+     用户访问的时候，缓存完成后 数据保存到本地 即使没有网络以前的数据也可以访问
+     serviceWorker.js文件可以删除
+
+     App.test.js 自动化测试 我们也不使用自动化测试 可以将他删除掉
+
+     manifest.json 使用PWA的时候使用 但我们不适用PWA 我们可以将其删除掉
+     别忘了在index.html中引入了这个json文件也可以将他删除掉
+    其实 删除掉很多文件后，整个项目也只有三个文件
+    只有index.html页面展示
+    index.js 整个项目的入口文件非常重要
+    app.js负责页面内容的展示  hello world
+
+2-4 React中的组件
+   import { component } from 'react'
+   等价于
+   import React from 'react'
+   const Component = React.Component
+
+2-5 React中最基础的JSX语法
+    JSX语法
+    JSX语法中，使用自己创建的组件 组件开头必须以大写字母开头
+    当一个标签以大写字母开头一般就是创建的标签

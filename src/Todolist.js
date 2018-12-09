@@ -35,7 +35,7 @@ class Todolist extends Component {
                                                key="index"
                                                onClick={this.delClick.bind(this, index)}
                                            >
-                                               {item}
+                                               <p className="p">{item}</p>
                                            </li>
                                        </div>
                                     )

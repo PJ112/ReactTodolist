@@ -131,8 +131,103 @@
 
 
 3-5 拆分组价与组件之间的传值
+    将todolist组件化
+    header  content
+    组件的定义的写法
+    import React， {Component} from 'react';
+    class TodoItem extends Component{
+        render () {
+            return <div>item</div>
+        }
+    }
+    export default TodoItem;
+
+    外部组件的引入
+    import TodoItem from './TodoItem';
+    <TodoItem/>
+    所有的元素 都必须在同一个div内容 必须用div包裹起来
+    父组件向子组件传值(实现添加功能)
+        1、通过属性来传递 content={item}
+        2、子组件如何使用传递过来的数据{this.props.content}
+    子组件向父组件传递数据(实现删除功能)
+        1、对TodoItem进行数据的绑定 onClick={this.handleClick}
+               handleClick (){
+                 //alert(1);
+               }
+        2、index属性的传递
+            index的获取
+       3、子组件如何调用父亲的方法
+            this的绑定最好放在constructor中写 节约性能
+            方法的调用
+                父组件的方法传递
+                hadnleItemDelete={this.handleItemDelete.bind(this)}
+                子组件调用父组件传递过来的方法
+                this.props.handleItemDelete(this.props.index)
+
+3-6 Todolist代码优化
+    {this.props.content}可以写成
+    const { content } = { this.props }
+    后面需要调用可以直接写  {content}
+
+    一般我们都是先引入组件再引入样式
+    this指向的绑定 最好都是在constructor中进行绑定
+    循环使用的this.map进行修改
+    将this.map中的函数写在getTodo之中
+    getTodo(){
+       return this.state.list.map((item, index) => {...})
+    }
+   然后在ul之中直接写{this.getTodo()}
+   这样让jsx中代码比较少 方便数据的处理
+     handleChange (e) {
+           this.setState ({
+               inputValue: e.target.value
+           })
+        }
+    这样写也不是也别好 为了进行代码的维护 可以采用如下方式
+     handleChange (e) {
+           this.setState(() => {
+                return {
+                    inputValue: e.target.value
+                }
+           })
+        }
+
+   可以将return省略写
+     handleChange (e) {
+               this.setState(() => ({
+                 inputValue: e.target.value
+               }))
+            }
+    setState是异步的函数
+    如果直接按照上面的方法就会报错 可以采用如下方法解决
+    const value = e.target.value
+    对value值进行一下保存
+    inputValue: value
+    使用这样的方式就可以解决这些问题
+    当把一个对象变成函数的时候 把值存在外层 然后使用这个变量就ok了
+    setState((prevState)会接收一个prevState参数
+   list: [...this.state.list, this.state.inputValue]
+   就需改写成
+   list: [...prevState.list, prevState.inputValue]
+   用index值作为key值是一个很不负责的行为 具体原因在讲虚拟DOM的时候会说到
 
 
-
-
+3-7 围绕React衍生出的思考
+    声名式开发 React 面向数据来编程 节约大量的DOM操作的代码
+        可以与其他框架并存 组件化 组件一般首字母大写 父组件通过属性的方式传值
+        子组件向父组件传值 通过调用父组件传过来的方法 进而进行对父组件的操作
+        React单向数据流 父组件向子组件传值 可以传递这个值 但是不能修改这个值
+         单向数据流还是有好处的 比如说list被多个组件共用 当某一个组件删除了list
+         那整个数据就乱套了
+        但是我们还是想能让子组件能修改父组件的值 怎么办呢？ 使用调用方法的方式
+        这样其实还是父组件对自己数据的改变
+        这样也就方便多了
+        React视图层框架
+        非父子组件传值还是很复杂的
+        函数式编程
+           React中基本都是一个个函数
+           constructor render 各种方法
+        前端自动化测试
+           给前端自动化测试带来了极大的方法 只要判断函数的输入输出是否正确
+    直接操作DOM 命令式编程
 

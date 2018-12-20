@@ -1,0 +1,229 @@
+4-1 Reactdevelopertools安装及使用
+    安装React开发调试工具
+    翻墙吧 哎
+    作用
+    进入React菜单
+
+
+4-2 PropTypes与DefaultProps
+    接收参数属性 如何定义参数类型和参数的默认值
+    使用PropTypes对属性进行强验证
+        1、引入PropTypes 脚手架工具自带这个包 直接引入
+            实际操作 表示需要下载 与视频还是有出入的
+        2、Todo.propTypes = {
+              content: PropTypes.String.isRequired,
+              //isRequired表示必须要传递
+              delClick: PropTypes: func
+        }
+        默认值 DefaultProps
+        Todo.defaultProps = {
+                      content: PropTypes.String.isRequired,
+                      //isRequired表示必须要传递
+                      delClick: PropTypes: func
+                }
+
+
+4-3 props state render函数
+    为什么数据变化 页面重新渲染
+    当组件的props和state发生改变的时候 render函数就会重新执行   --improtenace
+    在render函数中console.log('render')就会发现数据一旦变化 render函数就会被执行一次
+    可以新建一个Test.js
+       将inputValue的content传递给Test页面
+     当父组件的render函数被运行时，它的子组件的render都将被重新运行一次
+
+
+4-4  React中的虚拟DOM
+    虚拟DOM
+     1、state数据
+     2、JSX模板
+     3、数据 + 模板结合，生成真实的DOM，来显示
+     4、state数据发生改变
+     5、JSX模板
+     6、数据 + 模板结合， 生成真实的DOM，来替换
+
+     真实DOM的生成和替换是十分耗性能的
+     第一次生成了真实的DOM
+     第二次又生成了真是的DOM
+     第二次的真实DOM替换第一次的真实DOM   十分耗性能
+        因为其实在todolist之中，我们就input中的数据发生了变化，但我们确替换了整个DOM
+
+
+     简化方法
+        1、state数据
+        2、JSX模板
+        3、数据 + 模板结合， 生成真实的DOM，来显示
+        4、state数据发生变化
+        5、数据 + 模板结合，生成真实的DOM，但是并不直接替换DOM
+        6、而是DOM（document fragement），进行差异对比
+        7、找到input框中的数据
+        8、用新的input框中的数据来替换
+
+    下面的方法就是用到虚拟DOM的方法
+     1、state数据
+     2、JSX模板
+     3、数据 + 模板结合， 生成真实的DOM，来显示
+        <div id="div"><span>hello world</span></div>
+     4、生成了虚拟的DOM，（js对象，用它来描述真实的DOM）
+        ['div', {id: 'div'}, ['span', {}, 'hello world']]
+     5、state数据发生变化
+     6、数据 + 模板 生成新的虚拟DOM，
+         ['div', {id: 'div'}, ['span', {}, 'bye bye']]
+     7、比较原始虚拟DOM之间的区别，找到span内容的差异
+     8、直接操作DOM，改变原始内容
+
+
+
+    什么是虚拟DOM？
+
+    1、state数据
+    2、JSX模板
+    3、数据 + 模板 结合，生成真实的DOM，来显示
+    4、state发生改变
+    5、数据 + 模板结合，生成真实的DOM，来替换原始的DOM
+
+    缺陷：
+        第一次生成了一个完整的DOM片段
+        第二次生成了一个完成的DOM片段
+        第二次的DOM替换第一次的DOM 耗性能
+        1、state数据
+        2、JSX模板
+        3、数据 + 模板 结合，生成真实的DOM，来显示
+        4、state发生改变
+        5、数据 + 模板结合，生成真实的DOM，并不直接替换原始的DOM
+        6、新的DOM(DOcument Fragment)和原始的DOM 作对比 找差异
+        7、找出input框发生了变化
+        8、只用新的DOM中的input元素，替换掉老的DOM中的input元素
+
+    缺陷：
+        性能的提升并不明显
+ 虚拟DOM
+    1、state数据
+    2、JSX模板
+    3、数据 + 模板 结合，生成真实的DOM， 来显示
+        <div id="abc"><span>hello world</span></div>
+    4、生成虚拟的DOM（虚拟的DOM就是一个js对象，用它来描述真实DOM） 损耗了性能
+        ['div', {id='abc'},['span', {}, 'hello world']]
+     5、state 发生变化
+     6、数据 + 模板 生成新的虚拟DOM， （极大的提升了性能）
+       ['div', {id='abc'},['span', {}, 'bye world']]
+   7、比较原始虚拟DOM和新的虚拟DOM的区别，找到区别是span中的内容，极大提升了性能
+   8、直接操作DOM，改变span内容
+
+
+4-5 深入了解虚拟DOM
+    虚拟DOM这三节的内容很难理解，是底层的一些东西，建议多看几遍
+        1、state 数据
+        2、JSX模板
+        3、数据 + 模板 生成虚拟的DOM（虚拟的DOM就是一个JS对象，用它来描述真实的DOM）
+        4、用虚拟的DOM结构生成真是的DOM，来显示
+        5、state发生变化
+        6、数据 + 模板生成新的虚拟DOM
+        7、比较原始DOM虚拟DOM和新的虚拟DOM区别，找到区别是span中的内容
+        9、直接操作DOM，改变span中的内容
+    优点
+        提升了性能
+        跨端应用得以实现
+
+     return <div>item</div>
+     return React.createElement('div', {}, 'item')
+     如上面虚拟的DOM的创建，可以明显的看出来虚拟的DOM其实也就是js对象
+     return <div><span>item</span></div>
+     return React.createElement('div', {}, React.createElement('span', {}, 'item'))
+
+
+4-6  虚拟DOM中的Diff算法
+    在第7步骤之中 比较原始虚拟DOM和新的虚拟DOM的区别
+    Diff算法 Diffrence
+    虚拟DOM什么时候会被比对
+    state是异步的  三次修改一次
+     同层虚拟对比，找到差异 操作真实的DOM节点
+     只比对一层，发现差异全部替换
+        循环的时候key不要是index 原始的和新的 不一致问题
+
+4-7 React中的ref使用
+    Todo.propTypes = {
+        content: PropTypes.arrayOf(PropTypes.number, PropTypes.String)
+            //arrayOf要求的是content是一个数组类型，数组中的内容的类型可以是number或者是字符串
+    }
+    我们修改为
+    content: PropTypes.oneOfType([PropTypes.number, PropTypes.String])
+
+    ref的使用
+        ref={(input) => {this.input = input}}
+        e.target    this.input
+        不推荐直接使用DOM
+           在ul中使用下DOM节点
+           console.log(this.ul.querySelector('div').length);  //div的长度总是-1
+           setState是异步函数，并不会立即执行
+           setState会被执行，回调函数，将上一个的console.log放在setState第二个函数里面
+           这样就能保证，页面上的DOM结果就不会出错
+           页面更新之后再执行 就放在setState中的第二个函数之中
+
+
+
+4-8 React中的生命周期函数
+    生命周期函数是指某一时刻组件会自动调用执行的函数
+        render就是一个生命周期函数 render函数是在当props或state数据发生变化的时候，render函数被执行
+        constructor理解为一个周期函数 也是可以的 但是constructor并不是独有的 es6之中也是有的 组件一创建的时候就会被调用
+
+      Initialization
+        setup props and state 初始生命周期函数，当组件一创建的时候就会被执行
+            props和state数据的初始化
+     Mounting
+        componentWillMount
+            //在组件即将被挂载到页面的时刻自动执行
+            componentWillMount () {
+                console.log('componentWillMount')
+            }
+         render
+            挂载的时候执行
+            怎么知晓是在即将被挂载到页面的时刻自动执行呢？
+             在render下console.log（'render'）
+          componentDidMount
+            挂载之后执行
+        一般一个组件只请求一次componentWillMount、 componentDidMount
+
+     Updation
+        //组件被更新之前
+        shouldComponentUpdate () {
+          console.log('shouldComponentUpdate')；
+          return true
+          //返回的必须是一个布尔值 如果返回的是false 那么不管在input中输入什么，页面始终不会被更新
+        }
+        //组件被更新之前，它会自动执行，但是会在shouldComponentUpdate之后执行
+        //只有当shouldComponentUpdate返回的是true才会被执行，否则将不会被执行
+        componentWillUpdate () {
+            console.log('componentWillUpdate')
+        }
+        render
+        //组件更新完成之后
+        componentDidUpdate
+
+        //一个组件要从父组件接收参数
+        //只要父组件中的render函数被重新执行了，子组件的这个生命周期函数就会被执行
+        //如果这个组件第一次存在于父组件中，不会被执行
+        //如果这个组件之前已经存在与父组件，才会执行
+        componentWillReceiveProps
+
+   Unmounting
+         componentWillUnmount
+         //当这个组件即将被页面中清除的时候
+          componentWillUnmount () {
+              console.log('componentWillUnmount')
+          }
+
+
+4-9 React生命周期函数的使用场景
+    1、当父组件input框中的内容发生变化的时候，会发现父组件被渲染，子组件也会被一直渲染
+        这样十分耗性能，解决方法
+            shouldComponentUpdate (nextProps, nextState) {
+                if (nextProps.content !== this.props.content) {
+                    return true
+                } else {
+                    return false
+                }
+            }
+
+            类似这样解决耗性能的问题有1、this的绑定 2、props  3、preveState
+
+     2、React的AJAX请求

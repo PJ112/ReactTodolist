@@ -1,4 +1,5 @@
 import React, { Component} from 'react';
+import axios from 'axios'
 import './Todo';
 import Todo from "./Todo";
 import './todolist.css';
@@ -10,27 +11,21 @@ class Todolist extends Component {
            inputValue: '',
            list: []
        }
-       // console.log('constructor')
     }
-    // componentWillMount () {
-    //     console.log('componentWillMount')
-    // }
-    // componentDidMount () {
-    //     console.log('componentDidMount')
-    // }
-    // shouldComponentUpdate () {
-    //     console.log('shouldComponentUpdate');
-    //     return true
-    // }
-    // componentWillUpdate () {
-    //     console.log('componentWillUpdate')
-    // }
-    // componentDidUpdate (){
-    //     console.log('componentDidUpdate')
-    // }
-    // componentWillUnmount () {
-    //     console.log('parent componentWillUnmount')
-    // }
+    componentDidMount () {
+        axios.get('/api/todolist')
+            .then( (res) => {
+                // console.log(res.data)
+                this.setState( () =>
+                    ({
+                        list:  [...res.data]
+                    })
+                )
+            })
+            .catch( () => {
+                alert('error')
+            })
+    }
     render() {
         // console.log('parent render')
         this.handleChange = this.handleChange.bind(this)

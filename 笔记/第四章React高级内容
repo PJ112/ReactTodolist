@@ -197,7 +197,7 @@
         }
         render
         //组件更新完成之后
-        componentDidUpdate
+        c
 
         //一个组件要从父组件接收参数
         //只要父组件中的render函数被重新执行了，子组件的这个生命周期函数就会被执行
@@ -227,3 +227,113 @@
             类似这样解决耗性能的问题有1、this的绑定 2、props  3、preveState
 
      2、React的AJAX请求
+          AJAX的请求最好放在componentDidMount周期函数之中
+            componentDidMount () {
+                axios.get('/api/todolist')
+                    .then ( () => {console.log('suc'})
+                    .cache ( () => {console.log('error')})
+            }
+            结果为error说明发送了AJAX请求
+
+
+
+4-10 使用Charles进行接口数据模拟
+    charles的add 添加数据请求
+     componentDidMount () {
+        axios.get('/api/todolist')
+            .then ( () => {
+               this.setState ( () => ({
+
+                    list: [...res.data]     //防止外界到时候去data数据的修改，造成不可预测的错误
+               }))
+            })
+            .cache ( () => {console.log('error')})
+    }
+
+
+4-11 React之中的CSS过渡动画
+
+.show{
+   opacity: 1;
+   animation: show-item 1s ease-in;
+}
+.hide{
+    opacity: 0;
+    animation: hide-item 1s ease-in forwards;
+}
+
+4-12 React之中的css动画效果
+    @keyfrmes hide-item {
+        0% {
+            opacity: 1;
+            color: red;
+        }
+        50% {
+            opacity: 0.5;
+            color: green;
+        }
+        100% {
+
+            color: blue;
+        }
+    }
+
+    animation: forwash
+
+
+4-13 4-14
+react-transition-group的使用
+CSSTransition
+TransitionGroup
+混合使用
+循环的时候使用
+<TransitionGroup>
+{
+    this.state.list.map ( (item, index) => {
+        <CSSTransition
+            timeout={1000}
+              classNames='fade'
+              onEntered={(el) => {el.style.color='blue'}}
+              appear={true}
+              key={index}
+        >
+            <div>{item}/div>
+        </CSSTransition>
+
+    })
+
+}
+</TransitionGroup>
+
+AddClick () {
+    this.setState ( (prevState) => {
+        return {
+            list: [...prevState.list, 'item']
+
+        }
+    }
+    )
+
+}
+
+fade之中的动画
+.fade-enter .fade-appear-active{
+    opacity: 1;
+}
+.fade-enter-active .fade-appear-active{
+    opacity: 1;
+    transition: all 0.1s ease-in;
+}
+.fade-enter-done{
+    opacity: 1;
+}
+.fade-exit{
+    opacity: 1;
+}
+.fade-exit-active{
+    opacity: 1;
+    transition: all 0.1s ease-in;
+}
+.fade-exit-done{
+    opacity: 0;
+}
